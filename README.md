@@ -57,6 +57,24 @@ COUNCIL_MODELS = [
 CHAIRMAN_MODEL = "google/gemini-3-pro-preview"
 ```
 
+#### Using Local / Custom Models
+
+You can add local models (e.g., from LM Studio, vLLM, or Ollama) by prefixing them with `local/` and adding them to your `COUNCIL_MODELS` list:
+
+```python
+COUNCIL_MODELS = [
+    "openai/gpt-5.1",
+    "local/llama-3-8b-instruct",
+]
+```
+
+By default, this connects to `http://localhost:1234/v1/chat/completions`. You can customize this by setting environment variables in your `.env` file:
+
+```bash
+LOCAL_MODEL_BASE_URL=http://localhost:11434/v1/chat/completions
+LOCAL_MODEL_API_KEY=ollama
+```
+
 ## Running the Application
 
 **Option 1: Use the start script**

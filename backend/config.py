@@ -8,6 +8,10 @@ load_dotenv()
 # OpenRouter API key
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
+# Local Model Configuration
+LOCAL_MODEL_BASE_URL = os.getenv("LOCAL_MODEL_BASE_URL", "http://localhost:1234/v1/chat/completions")  # Example default
+LOCAL_MODEL_API_KEY = os.getenv("LOCAL_MODEL_API_KEY", "lm-studio")
+
 # Council members - list of OpenRouter model identifiers
 COUNCIL_MODELS = [
     "openai/gpt-5.1",
