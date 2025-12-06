@@ -142,10 +142,19 @@ async def send_message_stream(conversation_id: str, request: SendMessageRequest)
             # Add user message
             storage.add_user_message(conversation_id, request.content)
 
-            # Start title generation in parallel (don't await yet)
+
+            # Start title generation
             title_task = None
             if is_first_message:
-                title_task = asyncio.create_task(generate_conversation_title(request.content))
+                from .config import ROUND_ROBIN_EXECUTION
+                if ROUND_ROBIN_EXECUTION:
+                    # Sequential execution: await title generation before Stage 1
+                    title = await generate_conversation_title(request.content)
+                    storage.update_conversation_title(conversation_id, title)
+                    yield f"data: {json.dumps({'type': 'title_complete', 'data': {'title': title}})}\n\n"
+                else:
+                    # Parallel execution: start task and await later
+                    title_task = asyncio.create_task(generate_conversation_title(request.content))
 
             # Stage 1: Collect responses
             yield f"data: {json.dumps({'type': 'stage1_start'})}\n\n"
@@ -163,7 +172,7 @@ async def send_message_stream(conversation_id: str, request: SendMessageRequest)
             stage3_result = await stage3_synthesize_final(request.content, stage1_results, stage2_results)
             yield f"data: {json.dumps({'type': 'stage3_complete', 'data': stage3_result})}\n\n"
 
-            # Wait for title generation if it was started
+            # Wait for title generation if it was started in parallel
             if title_task:
                 title = await title_task
                 storage.update_conversation_title(conversation_id, title)

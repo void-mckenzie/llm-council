@@ -9,7 +9,7 @@ from .custom_model import query_custom_model
 async def query_model(
     model: str,
     messages: List[Dict[str, str]],
-    timeout: float = 120.0
+    timeout: float = 600.0
 ) -> Optional[Dict[str, Any]]:
     """
     Query a single model via OpenRouter API.

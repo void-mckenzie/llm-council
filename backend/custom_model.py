@@ -8,7 +8,7 @@ from .config import LOCAL_MODEL_BASE_URL, LOCAL_MODEL_API_KEY
 async def query_custom_model(
     model: str,
     messages: List[Dict[str, str]],
-    timeout: float = 120.0
+    timeout: float = 600.0
 ) -> Optional[Dict[str, Any]]:
     """
     Query a single model via a Custom/Local OpenAI-compatible API.

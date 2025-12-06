@@ -55,6 +55,7 @@ COUNCIL_MODELS = [
 ]
 
 CHAIRMAN_MODEL = "google/gemini-3-pro-preview"
+TITLE_MODEL = "google/gemini-2.5-flash"  # Optional: defaults to gemini-2.5-flash
 ```
 
 #### Using Local / Custom Models
@@ -83,7 +84,7 @@ By default, the council queries models **sequentially** (round-robin), which is 
 ROUND_ROBIN_EXECUTION=False
 ```
 
-**Sequential (default)**: Models are queried one after another. Total time = sum of individual model times.
+**Sequential (default)**: Models are queried one after another. Title generation also happens sequentially before Stage 1, to prevent concurrency issues. Total time = sum of individual model times.
 
 **Parallel**: All models are queried simultaneously. Total time ≈ slowest model's response time.
 
