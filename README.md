@@ -75,6 +75,18 @@ LOCAL_MODEL_BASE_URL=http://localhost:11434/v1/chat/completions
 LOCAL_MODEL_API_KEY=ollama
 ```
 
+### 4. Configure Execution Mode (Optional)
+
+By default, the council queries models **sequentially** (round-robin), which is ideal for local setups where you can only run one model at a time. If you want to query all models in parallel (faster but requires more resources), you can disable this:
+
+```bash
+ROUND_ROBIN_EXECUTION=False
+```
+
+**Sequential (default)**: Models are queried one after another. Total time = sum of individual model times.
+
+**Parallel**: All models are queried simultaneously. Total time ≈ slowest model's response time.
+
 ## Running the Application
 
 **Option 1: Use the start script**

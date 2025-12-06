@@ -9,8 +9,11 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 # Local Model Configuration
-LOCAL_MODEL_BASE_URL = os.getenv("LOCAL_MODEL_BASE_URL", "http://localhost:1234/v1/chat/completions")  # Example default
+LOCAL_MODEL_BASE_URL = os.getenv("LOCAL_MODEL_BASE_URL", "http://localhost:1234/v1/chat/completions")
 LOCAL_MODEL_API_KEY = os.getenv("LOCAL_MODEL_API_KEY", "lm-studio")
+
+# Execution Strategy
+ROUND_ROBIN_EXECUTION = os.getenv("ROUND_ROBIN_EXECUTION", "True").lower() == "true"
 
 # Council members - list of OpenRouter model identifiers
 COUNCIL_MODELS = [

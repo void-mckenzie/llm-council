@@ -2,7 +2,7 @@
 
 import httpx
 from typing import List, Dict, Any, Optional
-from .config import OPENROUTER_API_KEY, OPENROUTER_API_URL
+from .config import OPENROUTER_API_KEY, OPENROUTER_API_URL, ROUND_ROBIN_EXECUTION
 from .custom_model import query_custom_model
 
 
@@ -76,8 +76,13 @@ async def query_models_parallel(
     # Create tasks for all models
     tasks = [query_model(model, messages) for model in models]
 
-    # Wait for all to complete
-    responses = await asyncio.gather(*tasks)
-
     # Map models to their responses
-    return {model: response for model, response in zip(models, responses)}
+    if ROUND_ROBIN_EXECUTION:
+        responses = []
+        for model in models:
+            responses.append(await query_model(model, messages))
+        return {model: response for model, response in zip(models, responses)}
+    else:
+        # Wait for all to complete in parallel
+        responses = await asyncio.gather(*tasks)
+        return {model: response for model, response in zip(models, responses)}
